@@ -24,31 +24,30 @@ $router->get("/${api}/getInstituteur/{id}", function($id):JsonResponse{
 $resultat=DB::select("SELECT * from instituteur where idI=$id");
 
 });
-$router->post("/$api/createInstituteur", function(){
-
-        $nom=$tab['nom'];
-        $prenom=$tab['prenom'];
-        $dateNais=$tab['date_naissance'];
-        $tel=$tab['tel'];
-        $email=$tab['email'];
-        $adresse=$tab['adresse'];
-        $niveau=$tab['niveau'];
-        $password=$tab['password'];
-        DB::insert("INSERT INTO instituteur(nomI, prenomI, telI, emailI,adresseI, niveauI,passwordI, statut, ageI) VALUES($nom, $prenom, $tel,$email, $adresse, $niveau, $password, 1, $dateNais)");
-        return "Succes";
-
-   
-});
- $router->get("/$api/getAllInstituteur/", function(){
-     $resultat= DB::select("SELECT * from instituteur");
+$router->post("/$api/createInstituteur", ['uses'=>'InstituteurController@createInstituteur']);
+ $router->get("/$api/getAllInstituteur", function(){
+     $resultat= DB::select("SELECT * from instituteur where statut='1'");
      header('Content-Type: application/json');
      return json_encode($resultat, JSON_PRETTY_PRINT);
  });
 
- $router->put("/$api/updateInstituteur/{id}", function($id){
-    
+ $router->put("/$api/updateInstituteur/{id}", ['uses'=>'InstituteurController@editInstituteur'] );
+ $router->put("/$api/deleteInstituteur/{id}", ['uses'=>'InstituteurController@deleteInstituteur']);
+
+ $router->get("/$api/getAllInstituteurByModule/{module}", function($module){
+    $resultat=DB::select("SELECT * from instituteur inner join module on instituteur.idI=module.idI where module.designationM='$module");
+    return response()->json($resultat);
+
  });
- $router->put("/$api/deleteInstituteur/{id}", function($id){
+ $router->get("/$api/getAllRepetiteurByAdresse/{adresse}", function($adresse){
+    $resultat=DB::select("SELECT * from instituteur where adresseI='$adresse'");
+    return response()->json($resultat);
+ });
+ $router->get("/$api/getAllRepetiteurByHoraire/{horaire}", function($horaire){
+
+ });
+ $router->post("/$api/createHoraire", ['uses'=>'InstituteurController@createHoraire']);
+ $router->get("/$api/getAllRepetiteurByNiveau/{niveau}", function(){
 
  });
 
