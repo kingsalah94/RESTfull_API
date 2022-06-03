@@ -35,19 +35,24 @@ $router->post("/$api/createInstituteur", ['uses'=>'InstituteurController@createI
  $router->put("/$api/deleteInstituteur/{id}", ['uses'=>'InstituteurController@deleteInstituteur']);
 
  $router->get("/$api/getAllInstituteurByModule/{module}", function($module){
-    $resultat=DB::select("SELECT * from instituteur inner join module on instituteur.idI=module.idI where module.designationM='$module");
+    $resultat=DB::select("SELECT * from instituteur inner join matiere on instituteur.idI=matiere.idI where matiere.designationM='$module'");
     return response()->json($resultat);
 
  });
- $router->get("/$api/getAllRepetiteurByAdresse/{adresse}", function($adresse){
+ $router->get("/$api/getAllInstituteurByAdresse/{adresse}", function($adresse){
     $resultat=DB::select("SELECT * from instituteur where adresseI='$adresse'");
     return response()->json($resultat);
  });
- $router->get("/$api/getAllRepetiteurByHoraire/{horaire}", function($horaire){
+ $router->get("/$api/getAllInstituteurByHoraire/{horaire}", function($horaire){
 
  });
  $router->post("/$api/createHoraire", ['uses'=>'InstituteurController@createHoraire']);
- $router->get("/$api/getAllRepetiteurByNiveau/{niveau}", function(){
-
+ $router->get("/$api/getAllInstituteurByNiveau/{niveau}", function($niveau){
+    $resultat=DB::select("SELECT * from instituteur 
+    inner join matiere 
+    inner join niveau 
+    on instituteur.idI=matiere.idI and matiere.idN=niveau.idN 
+    where niveau.designationN='$niveau'");
+    return response()->json($resultat);
  });
 

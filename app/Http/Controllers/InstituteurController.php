@@ -15,6 +15,11 @@ class InstituteurController extends Controller
     {
         //
     }
+    function connexionInstituteur(Request $request){
+        $tel=$request['tel'];
+        $password=$request['password'];
+        $resultat=(DB)::select("SELECT * from ")
+    }
     function createInstituteur(Request $request){
         
         $nom=$request['nom'];
@@ -50,7 +55,8 @@ class InstituteurController extends Controller
         return response()->json("deleted");
     }
     function createHoraire(Request $request){
-        
+
     }
+
     //
 }
